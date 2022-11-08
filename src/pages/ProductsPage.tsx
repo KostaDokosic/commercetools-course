@@ -2,7 +2,7 @@ import { Product } from "@commercetools/platform-sdk";
 import { Grid } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Paggination from "../components/Pagination";
+import PaginationComponent from "../components/Pagination";
 import ProductCart from "../components/ProductCart";
 import { LoadingContext } from "../context/LoadingContext";
 import { useGetProductsQuery } from "../queries/product.query"
@@ -47,7 +47,7 @@ export default function ProductsPage() {
           )
         })}
       </Grid>
-      <Paggination count={Math.ceil((paginatedProducts.total || paginatedProducts.limit) / paginatedProducts.limit)} />
+      <PaginationComponent count={Math.ceil((paginatedProducts.total || paginatedProducts.limit) / paginatedProducts.limit)} />
     </>
   ) : <></>
 }

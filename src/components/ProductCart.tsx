@@ -9,6 +9,7 @@ import { formatLocalizedString, getFormatedPrice, getProductMainImage } from '..
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../utils/static';
 import { AddShoppingCart } from '@mui/icons-material';
+import useCart from '../hooks/useCart';
 
 interface Props {
   product: Product
@@ -16,6 +17,13 @@ interface Props {
 
 export default function ProductCart({ product }: Props) {
   const navigate = useNavigate();
+  const { addCartProduct } = useCart();
+
+  const addItemToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    addCartProduct(product);
+  }
+
   return (
     <Card sx={{ maxWidth: 500, height: 'auto', cursor: 'pointer' }} onClick={() => navigate(`${ROUTES.PRODUCTS}/${product.id}`)}>
       <CardMedia
@@ -34,7 +42,7 @@ export default function ProductCart({ product }: Props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="medium" variant='outlined' endIcon={<AddShoppingCart />}>Add To Cart {getFormatedPrice(product)}</Button>
+        <Button size="medium" variant='outlined' endIcon={<AddShoppingCart />} onClick={addItemToCart}>Add To Cart {getFormatedPrice(product)}</Button>
       </CardActions>
     </Card>
   );

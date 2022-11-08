@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from "@emotion/react";
 import LoadingProvider from "./providers/LoadingProvider";
 import CustomerProvider from "./providers/CustomerProvider";
+import CartProvider from "./providers/CartProvider";
 
 const theme = createTheme();
 function App() {
@@ -10,9 +11,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <LoadingProvider>
         <CustomerProvider>
-          <main>
-            <AppRoutes />
-          </main>
+          <CartProvider>
+            <main>
+              <AppRoutes />
+            </main>
+          </CartProvider>
         </CustomerProvider>
       </LoadingProvider>
     </ThemeProvider>

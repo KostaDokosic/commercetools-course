@@ -11,7 +11,7 @@ type Props = {
   count: number;
 }
 
-export default function Paggination({ count }: Props) {
+export default function PaginationComponent({ count }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState<number>(1);

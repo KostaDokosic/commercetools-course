@@ -1,4 +1,4 @@
-import { LocalizedString, Product } from "@commercetools/platform-sdk";
+import { Cart, LineItem, LocalizedString, Product } from "@commercetools/platform-sdk";
 
 export const formatLocalizedString = (
   str: LocalizedString | undefined
@@ -49,3 +49,25 @@ export const getFormatedPrice = (product: Product) => {
     getProductPrice(product)?.value.currencyCode
   }`;
 };
+
+export const getLineItemSize = (item: LineItem): string => {
+ return item.custom?.fields['size'];
+};
+
+export const getLineItemColor = (item: LineItem): string => {
+  return item.custom?.fields['color'];
+ };
+
+export const formatLineItemPrice = (item: LineItem): string => {
+  return `${item.price.value.centAmount / 100}${item.price.value.currencyCode}`;
+ };
+
+ export const getLineItemPrice = (item: LineItem): number => {
+  return item.price.value.centAmount / 100 * item.quantity;
+ };
+
+ export const getTotalPriceOfCart = (cart: Cart) => {
+  let price = 0;
+  cart.lineItems.forEach(i => price += getLineItemPrice(i))
+  return price;
+ }

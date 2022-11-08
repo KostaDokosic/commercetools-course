@@ -1,6 +1,7 @@
 import { Route } from "../types/navigation.types";
 
 export const customerStorageKey = 'customer';
+export const cartStorageKey = 'cart';
 
 export const ROUTES = {
   HOME: "/",
