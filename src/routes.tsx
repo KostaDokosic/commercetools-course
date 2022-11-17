@@ -4,6 +4,8 @@ import SigninPage from './pages/auth/SigninPage';
 import SignupPage from './pages/auth/SignupPage';
 import CartPage from './pages/CartPage';
 import Checkout from './pages/Checkout/CheckoutPage';
+import PaymentSuccess from './pages/Checkout/PaymentSuccess';
+import OrdersPage from './pages/Customer/OrdersPage';
 import ProfilePage from './pages/Customer/ProfilePage';
 import SingleProductPage from './pages/Products/SingleProductPage';
 import ProductsPage from './pages/ProductsPage';
@@ -19,6 +21,8 @@ const AppRoutes = () => {
         <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
         <Route path={ROUTES.CART} element={<CartPage />} />
         <Route path={ROUTES.CHECKOUT} element={<Checkout />} />
+        <Route path={ROUTES.MY_ORDERS} element={<OrdersPage />} />
+        <Route path={ROUTES.PAYMENT_SUCCESS} element={<PaymentSuccess />} />
 
         <Route index={true} path={ROUTES.PRODUCTS} element={<ProductsPage />} />
         <Route

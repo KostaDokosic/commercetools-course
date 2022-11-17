@@ -15,11 +15,14 @@ import { NAVIGATION_ROUTES, PROFILE_ROUTES } from '../utils/static';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { CustomerContext } from '../context/CustomerContext';
 import { useContext } from 'react';
+import useCart from '../hooks/useCart';
+import ProductSearch from './ProductSearch';
 
 function Navigation() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+  const {totalItems} = useCart();
   const { customer } = useContext(CustomerContext);
 
   const navigate = useNavigate();
@@ -151,7 +154,12 @@ function Navigation() {
                 </Button>
               ))}
             </Box>
-
+            <Box sx={{marginRight: '2rem'}}>
+              <ProductSearch />
+            </Box>
+            <Box sx={{marginRight: '2rem'}}>
+              Cart {totalItems}
+            </Box>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

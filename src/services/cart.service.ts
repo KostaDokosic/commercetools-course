@@ -36,3 +36,12 @@ export const createCart = async (cartDraft: CartDraft) => {
   const data = await apiRoot.carts().post({body: cartDraft}).execute();
   return data.body;
 }
+
+export const clearCart = async (cart: Cart) => {
+  const newCart = await apiRoot.carts().withId({ID: cart.id}).delete({
+    queryArgs: {
+      version: cart.version,
+    }
+  }).execute();
+  return newCart.body;
+}

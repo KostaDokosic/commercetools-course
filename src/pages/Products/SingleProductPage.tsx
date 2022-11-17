@@ -9,7 +9,7 @@ import { formatLocalizedString, getFormatedPrice, getProductColor, getProductMai
 
 export default function SingleProductPage() {
   const { productId } = useParams();
-  const { data: product, isLoading, error } = useGetProductByIdQuery(productId || '-1')
+  const { data: product, isLoading, error, refetch } = useGetProductByIdQuery(productId || '-1')
   const { setLoading, setLoadingError } = useContext(LoadingContext)
 
   useEffect(() => {
@@ -19,6 +19,10 @@ export default function SingleProductPage() {
   useEffect(() => {
     setLoadingError(error)
   }, [error, setLoadingError]);
+
+  useEffect(() => {
+    refetch()
+  }, [productId]);
 
   return !isLoading && product ? (
     <Grid container spacing={4} gridRow={2}>

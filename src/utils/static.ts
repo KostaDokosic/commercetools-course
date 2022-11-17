@@ -13,6 +13,7 @@ export const ROUTES = {
   MY_ORDERS: "/myorders",
   CHECKOUT: "/checkout",
   PROFILE: "/profile",
+  PAYMENT_SUCCESS: '/paymentsuccess'
 };
 
 export const NAVIGATION_ROUTES: Route[] = [

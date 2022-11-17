@@ -9,18 +9,28 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
-import ReviewForm from './ReviewForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import usePaymentIntent from '../../hooks/usePaymentIntent';
+import useCart from '../../hooks/useCart';
+import useLoading from '../../hooks/useLoading';
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
-
-const theme = createTheme();
+const steps = ['Shipping address', 'Payment details'];
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY || '');
 
 export default function Checkout() {
   const [activeStep, setActiveStep] = useState(0);
+  const {totalPrice} = useCart();
+  const {clientSecret} = usePaymentIntent({amount: totalPrice(), currency: 'EUR'});
+  const {setLoading} = useLoading()
+
+  useEffect(() => {
+    if(!clientSecret()) setLoading(true)
+    else setLoading(false)
+  }, [clientSecret, setLoading])
 
   function getStepContent(step: number) {
     switch (step) {
@@ -28,8 +38,6 @@ export default function Checkout() {
         return <AddressForm />;
       case 1:
         return <PaymentForm />;
-      case 2:
-        return <ReviewForm />;
       default:
         throw new Error('Unknown step');
     }
@@ -43,8 +51,10 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  return (
-    <ThemeProvider theme={theme}>
+  return clientSecret() ? (
+    <Elements stripe={stripePromise} options={{
+      clientSecret: clientSecret() || ''
+    }}>
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -106,6 +116,6 @@ export default function Checkout() {
           )}
         </Paper>
       </Container>
-    </ThemeProvider>
-  );
+    </Elements>
+  ) : <></>;
 }

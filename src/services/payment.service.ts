@@ -1,8 +1,19 @@
-import { Cart, CartAddPaymentAction, CartUpdate, Customer, CustomerResourceIdentifier, Payment, PaymentDraft, PaymentResourceIdentifier } from "@commercetools/platform-sdk"
+import { Cart, CartAddPaymentAction, CartUpdate, Customer, CustomerResourceIdentifier, Payment, PaymentDraft, PaymentResourceIdentifier, PaymentStatusDraft } from "@commercetools/platform-sdk"
+import { PaymentIntentResult } from "@stripe/stripe-js";
+import axios from "axios";
 import { getApiRoot } from "../commercetools/ClientBuilder";
 import { ErrorResponse } from "../types/error.types";
 
 const apiRoot = getApiRoot();
+
+export const getClientSecret = async (amount: number, currency: string) => {
+  return await axios.get<PaymentIntentResult>('https://5vlesiun04.execute-api.us-east-1.amazonaws.com/default/stripe-svc', {
+    params: {
+      amount,
+      currency
+    }
+  })
+}
 
 export const createPayment = async (customer: Customer, centAmount: number, currencyCode: string) => {
   try {
@@ -10,12 +21,17 @@ export const createPayment = async (customer: Customer, centAmount: number, curr
       typeId: "customer",
       id: customer.id
     }
+    const paymentStatus: PaymentStatusDraft = {
+      interfaceCode: 'Paid',
+      interfaceText: 'Payment Successfully Completed'
+    }
     const draft: PaymentDraft = {
       amountPlanned: {
         centAmount,
         currencyCode
       },
       customer: customerRes,
+      paymentStatus
     }
     const data = await apiRoot.payments().post({body: draft}).execute();
     return data;
